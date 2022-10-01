@@ -1,0 +1,75 @@
+{
+  "name": "poke-front",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/poke-front/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nxext/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/packages/poke-front",
+        "configFile": "packages/poke-front/front.vite.config.ts",
+        "frameworkConfigFile": "@nxext/react/plugins/vite"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "packages/poke-front/src/environments/environment.ts",
+              "with": "packages/poke-front/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nxext/vite:dev",
+      "defaultConfiguration": "development",
+      "options": {
+        "outputPath": "dist/packages/poke-front",
+        "baseHref": "/",
+        "configFile": "packages/poke-front/front.vite.config.ts",
+        "frameworkConfigFile": "@nxext/react/plugins/vite"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "poke-front:build:development"
+        },
+        "production": {
+          "buildTarget": "poke-front:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/poke-front/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/poke-front"],
+      "options": {
+        "jestConfig": "packages/poke-front/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
