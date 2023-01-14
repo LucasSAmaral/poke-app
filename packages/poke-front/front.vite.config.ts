@@ -4,5 +4,6 @@ export default defineConfig({
   server: {
     base: '/pokeapp/',
     port: 3000,
+    cors: false,
   },
 });
