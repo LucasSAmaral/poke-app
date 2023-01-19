@@ -10,6 +10,10 @@ type PokemonResponse = {
 export class PokemonRepository {
   instance = axios.create();
 
+  baseUrl = 'https://pokeapi.co/api/v2';
+
+  url = '/pokemon';
+
   async getPokemonListByLimit(limit: string) {
     const request = this.getPokemonByLimitRequest(limit);
 
@@ -22,8 +26,8 @@ export class PokemonRepository {
 
   getPokemonByLimitRequest(limit: string): AxiosRequestConfig {
     return {
-      baseURL: 'https://pokeapi.co/api/v2',
-      url: '/pokemon',
+      baseURL: this.baseUrl,
+      url: this.url,
       method: 'GET',
       params: {
         limit,
@@ -43,8 +47,8 @@ export class PokemonRepository {
 
   getPokemonNumberByNameRequest(name: string): AxiosRequestConfig {
     return {
-      baseURL: 'https://pokeapi.co/api/v2',
-      url: `/pokemon/${name}`,
+      baseURL: this.baseUrl,
+      url: `${this.url}/${name}`,
       method: 'GET',
     };
   }
