@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import axios, { AxiosResponse } from 'axios';
 import { useBffPage } from '../../hooks/useBffPage';
 
 const MainPage = () => {
@@ -11,17 +9,17 @@ const MainPage = () => {
   );
 
   switch (pageStatus) {
+    case 'error':
+      return (
+        <MainPageWrapper>
+          <MainPageTitle>Erro ao carregar página</MainPageTitle>
+        </MainPageWrapper>
+      );
     case 'loading':
     case 'idle':
       return <MainPageTitle>loading...</MainPageTitle>;
     case 'success': {
-      if (!queryResponse) {
-        return (
-          <MainPageWrapper>
-            <MainPageTitle>Erro ao carregar página</MainPageTitle>
-          </MainPageWrapper>
-        );
-      }
+      if (!queryResponse) return null;
 
       const { pageTitle, menuOptions } = queryResponse;
 
