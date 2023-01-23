@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PokemonRepository } from '../repository/pokemon.repository';
-import { WhoIsThatPokemonPayload } from './dto/build-page.dto';
 
 @Injectable()
 export class BuildService {
@@ -37,7 +36,7 @@ export class BuildService {
     }
   }
 
-  buildMainPage() {
+  buildMainPage(payload: MainPagePayload): MainPageResponse {
     return {
       pageTitle: 'PokeApp',
       menuOptions: [
