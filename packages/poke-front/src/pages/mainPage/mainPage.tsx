@@ -2,47 +2,43 @@ import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import axios, { AxiosResponse } from 'axios';
+import { useBffPage } from '../../hooks/useBffPage';
 
 const MainPage = () => {
-  const { data: queryResponse } = useQuery<
-    AxiosResponse<{
-      pageTitle: string;
-      menuOptions: { menuOptionName: string; linkPath: string }[];
-    }>
-  >(
-    'main_page',
-    async () =>
-      await axios.post('http://localhost:3333/api/build', {
-        pageName: 'MAIN_PAGE',
-        payload: {},
-      }),
-    { refetchOnWindowFocus: false }
+  const { queryResponse, pageStatus } = useBffPage<MainPageResponse>(
+    'MAIN_PAGE',
+    {}
   );
 
-  if (!queryResponse) {
-    return (
-      <MainPageWrapper>
-        <MainPageTitle>Erro ao carregar página</MainPageTitle>
-      </MainPageWrapper>
-    );
+  switch (pageStatus) {
+    case 'loading':
+    case 'idle':
+      return <MainPageTitle>loading...</MainPageTitle>;
+    case 'success': {
+      if (!queryResponse) {
+        return (
+          <MainPageWrapper>
+            <MainPageTitle>Erro ao carregar página</MainPageTitle>
+          </MainPageWrapper>
+        );
+      }
+
+      const { pageTitle, menuOptions } = queryResponse;
+
+      return (
+        <MainPageWrapper>
+          <MainPageTitle>{pageTitle}</MainPageTitle>
+          <MainPageMenu>
+            {menuOptions.map((menuOption, index) => (
+              <Link key={index} to={menuOption.linkPath}>
+                {menuOption.menuOptionName}
+              </Link>
+            ))}
+          </MainPageMenu>
+        </MainPageWrapper>
+      );
+    }
   }
-
-  const {
-    data: { menuOptions, pageTitle },
-  } = queryResponse;
-
-  return (
-    <MainPageWrapper>
-      <MainPageTitle>{pageTitle}</MainPageTitle>
-      <MainPageMenu>
-        {menuOptions.map((menuOption, index) => (
-          <Link key={index} to={menuOption.linkPath}>
-            {menuOption.menuOptionName}
-          </Link>
-        ))}
-      </MainPageMenu>
-    </MainPageWrapper>
-  );
 };
 
 export const MainPageWrapper = styled.div`
@@ -52,7 +48,7 @@ export const MainPageWrapper = styled.div`
   align-items: center;
 `;
 
-const MainPageTitle = styled.h2`
+export const MainPageTitle = styled.h2`
   font-size: 50px;
   margin-bottom: 100px;
 `;
