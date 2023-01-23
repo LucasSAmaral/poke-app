@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { WhoIsThatPokemonActionPayload } from './dto/action.dto';
 
 type CheckAnswerResponse = {
+  gameOver: boolean;
   correctAnswer?: string;
   wrongAnswer?: string;
   score?: number;
-  gameOver?: boolean;
 };
 
 @Injectable()
@@ -19,6 +19,7 @@ export class ActionService {
       return {
         correctAnswer,
         score,
+        gameOver: false,
       };
     }
 
@@ -32,6 +33,7 @@ export class ActionService {
       score,
       correctAnswer,
       wrongAnswer: selectedAnswer,
+      gameOver: false,
     };
   }
 }

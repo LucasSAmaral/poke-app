@@ -37,6 +37,23 @@ export class BuildService {
     }
   }
 
+  buildMainPage() {
+    return {
+      pageTitle: 'PokeApp',
+      menuOptions: [
+        { menuOptionName: 'Party', linkPath: 'poke-party' },
+        {
+          menuOptionName: 'Pokedex',
+          linkPath: 'pokedex',
+        },
+        {
+          menuOptionName: 'Who Is That Pokémon?',
+          linkPath: 'who-is-that-pokemon',
+        },
+      ],
+    };
+  }
+
   buildPokemonOptions(
     response: {
       name: string;

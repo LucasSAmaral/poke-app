@@ -1,4 +1,4 @@
-type PageName = 'WHO_IS_THAT_POKEMON' | 'POKEDEX';
+type PageName = 'MAIN_PAGE' | 'WHO_IS_THAT_POKEMON' | 'POKEDEX';
 
 type PokedexPayload = {};
 

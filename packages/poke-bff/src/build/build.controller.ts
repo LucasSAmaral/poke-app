@@ -11,6 +11,8 @@ export class BuildController {
     const { pageName, payload } = buildPageDto;
 
     switch (pageName) {
+      case 'MAIN_PAGE':
+        return this.buildService.buildMainPage();
       case 'WHO_IS_THAT_POKEMON':
         return await this.buildService.buildWhoIsThatPokemonPage(
           payload as WhoIsThatPokemonPayload
