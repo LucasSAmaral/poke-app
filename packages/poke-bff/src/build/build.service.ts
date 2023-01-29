@@ -4,27 +4,14 @@ import { PokemonRepository } from '../repository/pokemon.repository';
 @Injectable()
 export class BuildService {
   constructor(private pokemonRepository: PokemonRepository) {}
-  async buildWhoIsThatPokemonPage(payload: WhoIsThatPokemonPayload) {
-    const { limit } = payload;
-
+  async buildWhoIsThatPokemonPage({ limit }: WhoIsThatPokemonPayload) {
     try {
       const pokemonList = await this.pokemonRepository.getPokemonListByLimit(
         limit
       );
 
-      const pokemonOptions = this.buildPokemonOptions(pokemonList);
-
-      const ramdomNumber = this.randomizeNumber(pokemonOptions.length);
-
-      const correctAnswer = pokemonOptions[ramdomNumber];
-
-      const pokemonNumber = await this.pokemonRepository.getPokemonNumberByName(
-        correctAnswer
-      );
-
-      const safePokemonNumber = this.buildSafePokemonNumber(pokemonNumber);
-
-      const pokemonImageUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${safePokemonNumber}.png`;
+      const { correctAnswer, pokemonImageUrl, pokemonOptions } =
+        await this.generatePokemonData(pokemonList);
 
       return {
         correctAnswer,
@@ -34,6 +21,24 @@ export class BuildService {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async generatePokemonData(
+    pokemonList: {
+      name: string;
+      url: string;
+    }[]
+  ) {
+    const pokemonOptions = this.buildPokemonOptions(pokemonList);
+    const ramdomNumber = this.randomizeNumber(pokemonOptions.length);
+    const correctAnswer = pokemonOptions[ramdomNumber];
+    const pokemonNumber = await this.pokemonRepository.getPokemonNumberByName(
+      correctAnswer
+    );
+    const safePokemonNumber = this.buildSafePokemonNumber(pokemonNumber);
+    const pokemonImageUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${safePokemonNumber}.png`;
+
+    return { correctAnswer, pokemonOptions, pokemonImageUrl };
   }
 
   buildMainPage(payload: MainPagePayload): MainPageResponse {
@@ -74,14 +79,6 @@ export class BuildService {
   }
 
   buildSafePokemonNumber(number: string) {
-    if (number.length === 1) {
-      return `00${number}`;
-    }
-
-    if (number.length === 2) {
-      return `0${number}`;
-    }
-
-    return number;
+    return number.padStart(3, '0');
   }
 }
