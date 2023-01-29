@@ -13,10 +13,14 @@ export const useBffPage = <PageResponse>(
   } = useQuery<AxiosResponse<PageResponse, BuildPagePayload>>(
     [pageName],
     async () =>
-      await axios.post('http://localhost:3333/api/build', {
-        pageName,
-        payload,
-      }),
+      await axios.post(
+        'http://localhost:3333/api/build',
+        {
+          pageName,
+          payload,
+        },
+        { timeout: 2000 }
+      ),
     { refetchOnWindowFocus: false }
   );
 

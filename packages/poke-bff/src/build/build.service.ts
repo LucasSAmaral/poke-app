@@ -14,7 +14,7 @@ export class BuildService {
 
       const pokemonOptions = this.buildPokemonOptions(pokemonList);
 
-      const ramdomNumber = this.ramdomizeNumber(pokemonOptions.length);
+      const ramdomNumber = this.randomizeNumber(pokemonOptions.length);
 
       const correctAnswer = pokemonOptions[ramdomNumber];
 
@@ -59,21 +59,28 @@ export class BuildService {
       url: string;
     }[]
   ): Array<string> {
-    const pokemonList = [];
+    const pokemonList = new Set<string>();
 
-    for (let index = 0; index < 5; index++) {
-      const ramdomNumber = this.ramdomizeNumber(response.length);
-      if (pokemonList.includes(response[ramdomNumber].name)) {
-        const newRamdomNumber = this.ramdomizeNumber(response.length);
-        pokemonList.push(response[newRamdomNumber].name);
-      } else {
-        pokemonList.push(response[ramdomNumber].name);
-      }
+    while (pokemonList.size < 5) {
+      const randomNumber = this.randomizeNumber(response.length);
+      pokemonList.add(response[randomNumber].name);
     }
-    return pokemonList;
+
+    return Array.from(pokemonList);
+
+    // for (let index = 0; index < 5; index++) {
+    //   const ramdomNumber = this.ramdomizeNumber(response.length);
+    //   if (pokemonList.includes(response[ramdomNumber].name)) {
+    //     const newRamdomNumber = this.ramdomizeNumber(response.length);
+    //     pokemonList.push(response[newRamdomNumber].name);
+    //   } else {
+    //     pokemonList.push(response[ramdomNumber].name);
+    //   }
+    // }
+    // return pokemonList;
   }
 
-  ramdomizeNumber(ArrayLength: number) {
+  randomizeNumber(ArrayLength: number) {
     return Math.floor(Math.random() * ArrayLength);
   }
 
