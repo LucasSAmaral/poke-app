@@ -67,17 +67,6 @@ export class BuildService {
     }
 
     return Array.from(pokemonList);
-
-    // for (let index = 0; index < 5; index++) {
-    //   const ramdomNumber = this.ramdomizeNumber(response.length);
-    //   if (pokemonList.includes(response[ramdomNumber].name)) {
-    //     const newRamdomNumber = this.ramdomizeNumber(response.length);
-    //     pokemonList.push(response[newRamdomNumber].name);
-    //   } else {
-    //     pokemonList.push(response[ramdomNumber].name);
-    //   }
-    // }
-    // return pokemonList;
   }
 
   randomizeNumber(ArrayLength: number) {
