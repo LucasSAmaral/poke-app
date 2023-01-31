@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainPage from './pages/mainPage/mainPage';
+import WhoIsThatPokemon from './pages/whoIsThatPokemon';
 
 const router = createBrowserRouter([
   {
@@ -8,7 +9,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'who-is-that-pokemon',
-    element: <div>TEGA</div>,
+    element: <WhoIsThatPokemon />,
   },
   { path: 'poke-party' },
 ]);
