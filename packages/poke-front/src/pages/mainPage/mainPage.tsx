@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useBffPage } from '../../hooks/useBffPage';
+import { PageTitle, PageWrapper } from '../../style/commons.style';
 
 const MainPage = () => {
   const { queryResponse, pageStatus } = useBffPage<MainPageResponse>(
@@ -39,17 +40,9 @@ const MainPage = () => {
   }
 };
 
-export const MainPageWrapper = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+const MainPageWrapper = styled(PageWrapper)``;
 
-export const MainPageTitle = styled.h2`
-  font-size: 50px;
-  margin-bottom: 100px;
-`;
+const MainPageTitle = styled(PageTitle)``;
 
 const MainPageMenu = styled.div`
   width: 100%;
