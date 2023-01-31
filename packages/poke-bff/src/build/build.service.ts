@@ -4,7 +4,9 @@ import { PokemonRepository } from '../repository/pokemon.repository';
 @Injectable()
 export class BuildService {
   constructor(private pokemonRepository: PokemonRepository) {}
-  async buildWhoIsThatPokemonPage({ limit }: WhoIsThatPokemonPayload) {
+  async buildWhoIsThatPokemonPage({
+    limit,
+  }: WhoIsThatPokemonPayload): Promise<WhoIsThatPokemonPageResponse> {
     try {
       const pokemonList = await this.pokemonRepository.getPokemonListByLimit(
         limit
