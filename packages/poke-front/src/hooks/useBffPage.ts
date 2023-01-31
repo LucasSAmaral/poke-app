@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryOptions } from 'react-query';
 
 export const useBffPage = <PageResponse>(
   pageName: PageName,
-  payload: BuildPagePayload
+  payload: BuildPagePayload,
+  options?: Omit<UseQueryOptions<any, any, any, any>, 'queryKey' | 'queryFn'>
 ) => {
   const {
     data: queryResponse,
@@ -21,7 +22,7 @@ export const useBffPage = <PageResponse>(
         },
         { timeout: 2000 }
       ),
-    { refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, ...options }
   );
 
   return {
