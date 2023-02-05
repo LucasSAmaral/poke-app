@@ -2,8 +2,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useBffPage } from '../../hooks/useBffPage';
 import { PageTitle, PageWrapper } from '../../style/commons.style';
+import ErrorComponent from '../../components/commons/errorComponent';
+import LoadingComponent from '../../components/commons/loadingComponent';
 
-const MainPage = () => {
+const MainPage: React.FC = () => {
   const { queryResponse, pageStatus } = useBffPage<MainPageResponse>(
     'MAIN_PAGE',
     {}
@@ -11,14 +13,10 @@ const MainPage = () => {
 
   switch (pageStatus) {
     case 'error':
-      return (
-        <MainPageWrapper>
-          <MainPageTitle>Erro ao carregar página</MainPageTitle>
-        </MainPageWrapper>
-      );
+      return <ErrorComponent />;
     case 'loading':
     case 'idle':
-      return <MainPageTitle>loading...</MainPageTitle>;
+      return <LoadingComponent />;
     case 'success': {
       if (!queryResponse) return null;
 

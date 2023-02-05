@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+import ErrorComponent from '../../components/commons/errorComponent';
+import LoadingComponent from '../../components/commons/loadingComponent';
 import { useBffPage } from '../../hooks/useBffPage';
 import { PageTitle, PageWrapper } from '../../style/commons.style';
 
-const WhoIsThatPokemon = () => {
+const WhoIsThatPokemon: React.FC = () => {
   const { queryResponse, pageStatus } =
     useBffPage<WhoIsThatPokemonPageResponse>('WHO_IS_THAT_POKEMON', {
       limit: '151',
@@ -10,16 +12,10 @@ const WhoIsThatPokemon = () => {
 
   switch (pageStatus) {
     case 'error':
-      return (
-        <WhoIsThatPokemonWrapper>
-          <WhoIsThatPokemonPageTitle>
-            Erro ao carregar página
-          </WhoIsThatPokemonPageTitle>
-        </WhoIsThatPokemonWrapper>
-      );
+      return <ErrorComponent />;
     case 'loading':
     case 'idle':
-      return <WhoIsThatPokemonPageTitle>loading...</WhoIsThatPokemonPageTitle>;
+      return <LoadingComponent />;
     case 'success': {
       if (!queryResponse) return null;
 
