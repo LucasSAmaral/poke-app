@@ -56,6 +56,9 @@ const WhoIsThatPokemon: React.FC = () => {
           queryClient.invalidateQueries('WHO_IS_THAT_POKEMON');
         }, 3000);
       }
+      setTimeout(() => {
+        queryClient.invalidateQueries('WHO_IS_THAT_POKEMON');
+      }, 3000);
     },
   });
 
@@ -93,6 +96,9 @@ const WhoIsThatPokemon: React.FC = () => {
                 key={index}
                 isAnswerCorrect={
                   actionResponse?.data.correctAnswer === pokemonOption
+                }
+                isAnswerWrong={
+                  actionResponse?.data.wrongAnswer === pokemonOption
                 }
                 onClick={() => {
                   checkAnswer({
