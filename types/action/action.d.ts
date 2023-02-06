@@ -1,6 +1,6 @@
 type ActionType = 'CHECK_ANSWER';
 
-export type WhoIsThatPokemonActionPayload = {
+type WhoIsThatPokemonActionPayload = {
   selectedAnswer: string;
   correctAnswer: string;
   currentPoints: number;
@@ -8,7 +8,7 @@ export type WhoIsThatPokemonActionPayload = {
 
 type ActionPayload = WhoIsThatPokemonActionPayload;
 
-export type ActionDto = {
+type ActionDto = {
   type: ActionType;
   payload: ActionPayload;
 };

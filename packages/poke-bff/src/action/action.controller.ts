@@ -1,6 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ActionService } from './action.service';
-import { ActionDto, WhoIsThatPokemonActionPayload } from './dto/action.dto';
 
 @Controller('action')
 export class ActionController {
