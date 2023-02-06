@@ -1,17 +1,64 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import ErrorComponent from '../../components/commons/errorComponent';
 import LoadingComponent from '../../components/commons/loadingComponent';
+import { useBffAction } from '../../hooks/useBffAction';
 import { useBffPage } from '../../hooks/useBffPage';
 import { PageTitle, PageWrapper } from '../../style/commons.style';
+import { useQueryClient } from 'react-query';
+
+const checkCssAnswer = (isAnswerCorrect?: boolean, isAnswerWrong?: boolean) => {
+  if (isAnswerCorrect) {
+    return css`
+      transition: 1s;
+      background-color: green;
+      background-image: none;
+    `;
+  }
+
+  if (isAnswerWrong) {
+    return css`
+      transition: 1s;
+      background-color: red;
+      background-image: none;
+    `;
+  }
+
+  return css``;
+};
 
 const WhoIsThatPokemon: React.FC = () => {
   const { queryResponse, pageStatus } =
-    useBffPage<WhoIsThatPokemonPageResponse>('WHO_IS_THAT_POKEMON', {
-      limit: '151',
-    });
+    useBffPage<WhoIsThatPokemonPageResponse>(
+      'WHO_IS_THAT_POKEMON',
+      {
+        limit: '151',
+      },
+      {
+        onSuccess: () => {
+          resetAnswer();
+          setShouldShowPokemonImage(false);
+        },
+      }
+    );
 
-  // TODO: retornar se pode mostrar a imagem do bff
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: checkAnswer,
+    reset: resetAnswer,
+    actionResponse,
+  } = useBffAction<CheckAnswerResponse>('CHECK_ANSWER', {
+    onSuccess: (actionResponse) => {
+      if (actionResponse.data.isAnswerCorrect) {
+        setShouldShowPokemonImage(true);
+        setTimeout(() => {
+          queryClient.invalidateQueries('WHO_IS_THAT_POKEMON');
+        }, 3000);
+      }
+    },
+  });
+
   const [shouldShowPokemonImage, setShouldShowPokemonImage] =
     useState<boolean>(false);
 
@@ -33,6 +80,7 @@ const WhoIsThatPokemon: React.FC = () => {
 
           <WhoIsThatPokemonImageContainer>
             <WhoIsThatPokemonImage
+              style={{ transition: shouldShowPokemonImage ? 'ease-in 1s' : '' }}
               className={shouldShowPokemonImage ? '' : 'cover'}
               src={pokemonImageUrl}
               draggable={false}
@@ -43,10 +91,15 @@ const WhoIsThatPokemon: React.FC = () => {
             {pokemonOptions.map((pokemonOption, index) => (
               <WhoIsThatPokemonButton
                 key={index}
+                isAnswerCorrect={
+                  actionResponse?.data.correctAnswer === pokemonOption
+                }
                 onClick={() => {
-                  if (correctAnswer === pokemonOption) {
-                    setShouldShowPokemonImage(true);
-                  }
+                  checkAnswer({
+                    correctAnswer,
+                    currentPoints: 10,
+                    selectedAnswer: pokemonOption,
+                  });
                 }}
               >
                 {pokemonOption}
@@ -80,7 +133,6 @@ const WhoIsThatPokemonImageContainer = styled.div`
 const WhoIsThatPokemonImage = styled.img`
   max-width: 300px;
   height: 300px;
-  transition: 1s;
 `;
 
 const WhoIsThatPokemonOptionsWrapper = styled.div`
@@ -88,7 +140,10 @@ const WhoIsThatPokemonOptionsWrapper = styled.div`
   flex-direction: column;
 `;
 
-const WhoIsThatPokemonButton = styled.button`
+const WhoIsThatPokemonButton = styled.button<{
+  isAnswerCorrect?: boolean;
+  isAnswerWrong?: boolean;
+}>`
   cursor: pointer;
   min-width: 150px;
   height: 30px;
@@ -98,10 +153,15 @@ const WhoIsThatPokemonButton = styled.button`
   color: #ffcb05;
   text-decoration: none;
   background-image: linear-gradient(to bottom, #010124, #002c5f, #010124);
+  ${({ isAnswerCorrect, isAnswerWrong }) =>
+    checkCssAnswer(isAnswerCorrect, isAnswerWrong)}
+
   border-radius: 9px;
 
   &:hover {
     background-image: linear-gradient(to bottom, #002c5f, #010124, #002c5f);
+    ${({ isAnswerCorrect, isAnswerWrong }) =>
+      checkCssAnswer(isAnswerCorrect, isAnswerWrong)}
   }
 `;
 
