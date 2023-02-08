@@ -6,7 +6,7 @@ import { useBffAction } from '../../hooks/useBffAction';
 import { useBffPage } from '../../hooks/useBffPage';
 import { PageTitle, PageWrapper } from '../../style/commons.style';
 import { useQueryClient } from 'react-query';
-
+// TODO: colocar essa função em outro arquivo
 const checkCssAnswer = (isAnswerCorrect?: boolean, isAnswerWrong?: boolean) => {
   if (isAnswerCorrect) {
     return css`
