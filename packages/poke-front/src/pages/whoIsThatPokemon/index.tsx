@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import styled, { css } from 'styled-components';
 import ErrorComponent from '../../components/commons/errorComponent';
 import LoadingComponent from '../../components/commons/loadingComponent';
@@ -27,7 +27,7 @@ const checkCssAnswer = (isAnswerCorrect?: boolean, isAnswerWrong?: boolean) => {
   return css``;
 };
 
-const WhoIsThatPokemon: React.FC = () => {
+const WhoIsThatPokemon: React.FC = memo(() => {
   const { queryResponse, pageStatus } =
     useBffPage<WhoIsThatPokemonPageResponse>(
       'WHO_IS_THAT_POKEMON',
@@ -38,6 +38,7 @@ const WhoIsThatPokemon: React.FC = () => {
         onSuccess: () => {
           resetAnswer();
           setShouldShowPokemonImage(false);
+          setLoading(false);
         },
       }
     );
@@ -53,17 +54,23 @@ const WhoIsThatPokemon: React.FC = () => {
       if (actionResponse.data.isAnswerCorrect) {
         setShouldShowPokemonImage(true);
         setTimeout(() => {
+          setLoading(true);
           queryClient.invalidateQueries('WHO_IS_THAT_POKEMON');
         }, 3000);
+        return;
       }
       setTimeout(() => {
+        setLoading(true);
         queryClient.invalidateQueries('WHO_IS_THAT_POKEMON');
       }, 3000);
+      return;
     },
   });
 
   const [shouldShowPokemonImage, setShouldShowPokemonImage] =
     useState<boolean>(false);
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   switch (pageStatus) {
     case 'error':
@@ -82,12 +89,31 @@ const WhoIsThatPokemon: React.FC = () => {
           </WhoIsThatPokemonPageTitle>
 
           <WhoIsThatPokemonImageContainer>
-            <WhoIsThatPokemonImage
-              style={{ transition: shouldShowPokemonImage ? 'ease-in 1s' : '' }}
-              className={shouldShowPokemonImage ? '' : 'cover'}
-              src={pokemonImageUrl}
-              draggable={false}
-            />
+            {/* TODO: criar loading para a imagem */}
+            {loading ? (
+              <div
+                style={{
+                  width: '300px',
+                  height: '300px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  fontSize: '30px',
+                }}
+              >
+                Loading...
+              </div>
+            ) : (
+              <WhoIsThatPokemonImage
+                style={{
+                  transition: shouldShowPokemonImage ? 'ease-in 1s' : '',
+                }}
+                className={shouldShowPokemonImage ? '' : 'cover'}
+                src={pokemonImageUrl}
+                draggable={false}
+              />
+            )}
           </WhoIsThatPokemonImageContainer>
 
           <WhoIsThatPokemonOptionsWrapper>
@@ -116,7 +142,7 @@ const WhoIsThatPokemon: React.FC = () => {
       );
     }
   }
-};
+});
 
 const WhoIsThatPokemonWrapper = styled(PageWrapper)`
   justify-content: start;
