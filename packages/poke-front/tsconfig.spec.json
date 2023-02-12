@@ -5,6 +5,7 @@
     "module": "commonjs",
     "types": ["jest", "node"]
   },
+  "files": ["../../types/index.d.ts"],
   "include": [
     "**/*.spec.ts",
     "**/*.spec.js",
