@@ -1,31 +1,13 @@
 import { memo, useState } from 'react';
 import styled, { css } from 'styled-components';
 import ErrorComponent from '../../components/commons/errorComponent';
-import LoadingComponent from '../../components/commons/loadingComponent';
+import LoadingPageComponent from '../../components/commons/loadingPageComponent';
 import { useBffAction } from '../../hooks/useBffAction';
 import { useBffPage } from '../../hooks/useBffPage';
 import { PageTitle, PageWrapper } from '../../style/commons.style';
 import { useQueryClient } from 'react-query';
-// TODO: colocar essa função em outro arquivo
-const checkCssAnswer = (isAnswerCorrect?: boolean, isAnswerWrong?: boolean) => {
-  if (isAnswerCorrect) {
-    return css`
-      transition: 1s;
-      background-color: green;
-      background-image: none;
-    `;
-  }
-
-  if (isAnswerWrong) {
-    return css`
-      transition: 1s;
-      background-color: red;
-      background-image: none;
-    `;
-  }
-
-  return css``;
-};
+import { checkCssAnswer } from '../../services/css.service';
+import LoadingPokemonComponent from './components/loadingPokemonComponent';
 
 const WhoIsThatPokemon: React.FC = memo(() => {
   const { queryResponse, pageStatus } =
@@ -77,7 +59,7 @@ const WhoIsThatPokemon: React.FC = memo(() => {
       return <ErrorComponent />;
     case 'loading':
     case 'idle':
-      return <LoadingComponent />;
+      return <LoadingPageComponent />;
     case 'success': {
       if (!queryResponse) return null;
 
@@ -89,21 +71,8 @@ const WhoIsThatPokemon: React.FC = memo(() => {
           </WhoIsThatPokemonPageTitle>
 
           <WhoIsThatPokemonImageContainer>
-            {/* TODO: criar loading para a imagem */}
             {loading ? (
-              <div
-                style={{
-                  width: '300px',
-                  height: '300px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  fontSize: '30px',
-                }}
-              >
-                Loading...
-              </div>
+              <LoadingPokemonComponent />
             ) : (
               <WhoIsThatPokemonImage
                 style={{
@@ -154,6 +123,7 @@ const WhoIsThatPokemonPageTitle = styled(PageTitle)`
 `;
 
 const WhoIsThatPokemonImageContainer = styled.div`
+  height: 300px;
   img {
     filter: brightness(1) drop-shadow(2px 4px 4px black);
     &.cover {
