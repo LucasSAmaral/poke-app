@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "nx run-many --target=serve --projects=poke-front,poke-bff"
+    "dev": "nx run-many --target=serve --projects=poke-front,poke-bff",
+    "bff:test": "nx test poke-bff --watch"
   },
   "private": true,
   "devDependencies": {
