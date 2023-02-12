@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useBffPage } from '../../hooks/useBffPage';
 import { PageTitle, PageWrapper } from '../../style/commons.style';
 import ErrorComponent from '../../components/commons/errorComponent';
-import LoadingComponent from '../../components/commons/loadingComponent';
+import LoadingPageComponent from '../../components/commons/loadingPageComponent';
 
 const MainPage: React.FC = () => {
   const { queryResponse, pageStatus } = useBffPage<MainPageResponse>(
@@ -16,7 +16,7 @@ const MainPage: React.FC = () => {
       return <ErrorComponent />;
     case 'loading':
     case 'idle':
-      return <LoadingComponent />;
+      return <LoadingPageComponent />;
     case 'success': {
       if (!queryResponse) return null;
 
