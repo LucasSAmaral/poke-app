@@ -9,6 +9,7 @@ import { useQueryClient } from 'react-query';
 import { checkCssAnswer } from '../../services/css.service';
 import LoadingPokemonComponent from './components/loadingPokemonComponent';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const WhoIsThatPokemon: React.FC = memo(() => {
   const { queryResponse, pageStatus } =
@@ -28,6 +29,8 @@ const WhoIsThatPokemon: React.FC = memo(() => {
 
   const queryClient = useQueryClient();
 
+  const navigate = useNavigate();
+
   const {
     mutate: checkAnswer,
     reset: resetAnswer,
@@ -35,6 +38,7 @@ const WhoIsThatPokemon: React.FC = memo(() => {
   } = useBffAction<CheckAnswerResponse>('CHECK_ANSWER', {
     onSuccess: (actionResponse) => {
       Cookies.set('score', actionResponse.data.score?.toLocaleString() ?? '0');
+
       if (actionResponse.data.isAnswerCorrect) {
         setShouldShowPokemonImage(true);
         setTimeout(() => {
@@ -43,6 +47,11 @@ const WhoIsThatPokemon: React.FC = memo(() => {
         }, 3000);
         return;
       }
+
+      if (actionResponse.data.gameOver) {
+        navigate('/game-over');
+      }
+
       setTimeout(() => {
         setLoading(true);
         queryClient.invalidateQueries('WHO_IS_THAT_POKEMON');
@@ -54,7 +63,7 @@ const WhoIsThatPokemon: React.FC = memo(() => {
   const [shouldShowPokemonImage, setShouldShowPokemonImage] =
     useState<boolean>(false);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   switch (pageStatus) {
     case 'error':
@@ -128,7 +137,7 @@ const WhoIsThatPokemonPageTitle = styled(PageTitle)`
   margin-bottom: 0;
 `;
 
-const WhoIsThatPokemonScore = styled.h2`
+const WhoIsThatPokemonScore = styled.h3`
   font-size: 2.5rem;
 `;
 
