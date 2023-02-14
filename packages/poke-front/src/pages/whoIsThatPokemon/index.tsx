@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import ErrorComponent from '../../components/commons/errorComponent';
 import LoadingPageComponent from '../../components/commons/loadingPageComponent';
 import { useBffAction } from '../../hooks/useBffAction';
@@ -8,6 +8,7 @@ import { PageTitle, PageWrapper } from '../../style/commons.style';
 import { useQueryClient } from 'react-query';
 import { checkCssAnswer } from '../../services/css.service';
 import LoadingPokemonComponent from './components/loadingPokemonComponent';
+import Cookies from 'js-cookie';
 
 const WhoIsThatPokemon: React.FC = memo(() => {
   const { queryResponse, pageStatus } =
@@ -33,6 +34,7 @@ const WhoIsThatPokemon: React.FC = memo(() => {
     actionResponse,
   } = useBffAction<CheckAnswerResponse>('CHECK_ANSWER', {
     onSuccess: (actionResponse) => {
+      Cookies.set('score', actionResponse.data.score?.toLocaleString() ?? '0');
       if (actionResponse.data.isAnswerCorrect) {
         setShouldShowPokemonImage(true);
         setTimeout(() => {
@@ -70,6 +72,10 @@ const WhoIsThatPokemon: React.FC = memo(() => {
             Who is that Pokémon?
           </WhoIsThatPokemonPageTitle>
 
+          <WhoIsThatPokemonScore>
+            Score: {Cookies.get('score') ?? '0'}
+          </WhoIsThatPokemonScore>
+
           <WhoIsThatPokemonImageContainer>
             {loading ? (
               <LoadingPokemonComponent />
@@ -98,7 +104,7 @@ const WhoIsThatPokemon: React.FC = memo(() => {
                 onClick={() => {
                   checkAnswer({
                     correctAnswer,
-                    currentPoints: 10,
+                    currentPoints: Number(Cookies.get('score') ?? '0'),
                     selectedAnswer: pokemonOption,
                   });
                 }}
@@ -120,6 +126,10 @@ const WhoIsThatPokemonWrapper = styled(PageWrapper)`
 
 const WhoIsThatPokemonPageTitle = styled(PageTitle)`
   margin-bottom: 0;
+`;
+
+const WhoIsThatPokemonScore = styled.h2`
+  font-size: 2.5rem;
 `;
 
 const WhoIsThatPokemonImageContainer = styled.div`
