@@ -18,7 +18,7 @@ export class ActionService {
 
     const score = currentPoints - 1;
 
-    if (score <= 0) {
+    if (score < 0) {
       return { gameOver: true };
     }
 
