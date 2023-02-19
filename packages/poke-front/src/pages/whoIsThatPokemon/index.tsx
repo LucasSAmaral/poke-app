@@ -6,7 +6,7 @@ import { useBffAction } from '../../hooks/useBffAction';
 import { useBffPage } from '../../hooks/useBffPage';
 import { PageTitle, PageWrapper } from '../../style/commons.style';
 import { useQueryClient } from 'react-query';
-import { checkCssAnswer } from '../../services/css.service';
+import { checkCssAnswer, loadingSkeleton } from '../../services/css.service';
 import LoadingPokemonComponent from './components/loadingPokemonComponent';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -36,10 +36,10 @@ const WhoIsThatPokemon: React.FC = memo(() => {
     reset: resetAnswer,
     actionResponse,
   } = useBffAction<CheckAnswerResponse>('CHECK_ANSWER', {
-    onSuccess: (actionResponse) => {
-      Cookies.set('score', actionResponse.data.score?.toLocaleString() ?? '0');
+    onSuccess: ({ data: { gameOver, score, isAnswerCorrect } }) => {
+      Cookies.set('score', score?.toLocaleString() ?? '0');
 
-      if (actionResponse.data.isAnswerCorrect) {
+      if (isAnswerCorrect) {
         setShouldShowPokemonImage(true);
         setTimeout(() => {
           setLoading(true);
@@ -48,7 +48,7 @@ const WhoIsThatPokemon: React.FC = memo(() => {
         return;
       }
 
-      if (actionResponse.data.gameOver) {
+      if (gameOver) {
         navigate('/game-over');
       }
 
@@ -117,6 +117,8 @@ const WhoIsThatPokemon: React.FC = memo(() => {
                     selectedAnswer: pokemonOption,
                   });
                 }}
+                disabled={loading}
+                loading={loading}
               >
                 {pokemonOption}
               </WhoIsThatPokemonButton>
@@ -162,6 +164,7 @@ const WhoIsThatPokemonOptionsWrapper = styled.div`
 `;
 
 const WhoIsThatPokemonButton = styled.button<{
+  loading: boolean;
   isAnswerCorrect?: boolean;
   isAnswerWrong?: boolean;
 }>`
@@ -170,20 +173,14 @@ const WhoIsThatPokemonButton = styled.button<{
   height: 30px;
   font-size: 1rem;
   text-align: center;
-  background-color: #010124;
   color: #ffcb05;
   text-decoration: none;
-  background-image: linear-gradient(to bottom, #010124, #002c5f, #010124);
+  border-radius: 9px;
+
   ${({ isAnswerCorrect, isAnswerWrong }) =>
     checkCssAnswer(isAnswerCorrect, isAnswerWrong)}
 
-  border-radius: 9px;
-
-  &:hover {
-    background-image: linear-gradient(to bottom, #002c5f, #010124, #002c5f);
-    ${({ isAnswerCorrect, isAnswerWrong }) =>
-      checkCssAnswer(isAnswerCorrect, isAnswerWrong)}
-  }
+  ${({ loading }) => loadingSkeleton(loading)}
 `;
 
 export default WhoIsThatPokemon;
