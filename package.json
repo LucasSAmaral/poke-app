@@ -2,6 +2,10 @@
   "name": "poke-app-nx",
   "version": "0.0.0",
   "license": "MIT",
+  "engines": {
+    "node": "18.x",
+    "npm": "8.x"
+  },
   "scripts": {
     "dev": "nx run-many --target=serve --projects=poke-front,poke-bff",
     "start:bff:prod": "node dist/packages/poke-bff/main",
