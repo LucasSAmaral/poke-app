@@ -1,9 +1,14 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { BuildService } from './build.service';
 
 @Controller('build')
 export class BuildController {
   constructor(private buildService: BuildService) {}
+
+  @Get()
+  helloWorld() {
+    return 'Hello World';
+  }
 
   @Post()
   async buildPage(@Body() buildPageDto: BuildPageDto) {
