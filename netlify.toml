@@ -1,2 +1,4 @@
 [build]
-base = "packages/poke-front"
+base = "."
+publish = "build"
+command = "npm run front:build"
