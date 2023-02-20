@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "nx run-many --target=serve --projects=poke-front,poke-bff",
     "start:bff:prod": "node dist/packages/poke-bff/main",
+    "front:build": "npm install && npx nx build poke-front --prod",
     "bff:build": "npm install && npx nx build poke-bff --prod",
     "bff:test": "nx test poke-bff --watch"
   },

@@ -1,5 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, UseMutationOptions } from 'react-query';
+import { NodeEnvironment } from './useBffPage';
+
+const env = process.env.NODE_ENV ?? 'development';
+
+const actionUrlEnv: { [key in NodeEnvironment]: string } = {
+  development: 'http://localhost:3333/api/action',
+  production: 'https://poke-bff.onrender.com/api/action',
+};
 
 export const useBffAction = <ActionResponse>(
   type: ActionType,
@@ -28,7 +36,7 @@ export const useBffAction = <ActionResponse>(
   >(
     async (payload: ActionPayload) =>
       await axios.post(
-        'http://localhost:3333/api/action',
+        actionUrlEnv[env as NodeEnvironment],
         {
           type,
           payload,

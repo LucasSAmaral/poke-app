@@ -1,6 +1,15 @@
 import axios, { AxiosResponse } from 'axios';
 import { useQuery, UseQueryOptions } from 'react-query';
 
+export type NodeEnvironment = 'development' | 'production';
+
+const env = process.env.NODE_ENV ?? 'development';
+
+const buildUrlEnv: { [key in NodeEnvironment]: string } = {
+  development: 'http://localhost:3333/api/build',
+  production: 'https://poke-bff.onrender.com/api/build',
+};
+
 export const useBffPage = <PageResponse>(
   pageName: PageName,
   payload: BuildPagePayload,
@@ -15,7 +24,7 @@ export const useBffPage = <PageResponse>(
     [pageName],
     async () =>
       await axios.post(
-        'http://localhost:3333/api/build',
+        buildUrlEnv[env as NodeEnvironment],
         {
           pageName,
           payload,
