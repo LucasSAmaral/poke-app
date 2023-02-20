@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nx run-many --target=serve --projects=poke-front,poke-bff",
     "start:bff:prod": "node dist/packages/poke-bff/main",
-    "heroku-postbuild": "npm install && npx nx build poke-bff --prod",
+    "heroku-postbuild": "npx nx build poke-bff --prod",
     "bff:test": "nx test poke-bff --watch"
   },
   "private": true,
