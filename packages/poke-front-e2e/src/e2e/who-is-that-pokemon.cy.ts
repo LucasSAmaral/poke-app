@@ -1,27 +1,19 @@
 describe('Who is that pokemon flux', () => {
-  const buildResponseMock = {
-    correctAnswer: 'pikachu',
-    pokemonImageUrl:
-      'https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png',
-    pokemonOptions: ['vulpix', 'scyther', 'pikachu', 'goldeen', 'ninetales'],
-  };
-
-  const actionCorrectAnswerMock = {
-    correctAnswer: 'pikachu',
-    gameOver: false,
-    isAnswerCorrect: true,
-    score: 1,
-  };
-
   beforeEach(() => {
-    cy.intercept('http://localhost:3333/api/build', buildResponseMock).as(
-      'build'
-    );
+    cy.fixture('buildResponse').then((buildResponseMock) => {
+      cy.intercept('http://localhost:3333/api/build', buildResponseMock).as(
+        'build'
+      );
+    });
 
-    cy.intercept(
-      'http://localhost:3333/api/action',
-      actionCorrectAnswerMock
-    ).as('action');
+    cy.fixture('actionCorrectAnswerResponse').then(
+      (actionCorrectAnswerMock) => {
+        cy.intercept(
+          'http://localhost:3333/api/action',
+          actionCorrectAnswerMock
+        ).as('action');
+      }
+    );
 
     cy.visit('/who-is-that-pokemon');
   });
@@ -31,13 +23,15 @@ describe('Who is that pokemon flux', () => {
   });
 
   it('should display the options', () => {
-    cy.wait('@build')
-      .its('response.body.pokemonOptions')
-      .should('deep.equal', buildResponseMock.pokemonOptions);
+    cy.fixture('buildResponse').then((buildResponseMock) => {
+      cy.wait('@build')
+        .its('response.body.pokemonOptions')
+        .should('deep.equal', buildResponseMock.pokemonOptions);
 
-    buildResponseMock.pokemonOptions.map((option, index) =>
-      cy.get(`[data-cy=option-${index}]`).contains(option)
-    );
+      buildResponseMock.pokemonOptions.map((option, index) =>
+        cy.get(`[data-cy=option-${index}]`).contains(option)
+      );
+    });
   });
 
   it('should choose correct answer', () => {
