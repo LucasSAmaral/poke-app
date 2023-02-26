@@ -82,7 +82,7 @@ const WhoIsThatPokemon: React.FC = memo(() => {
           </WhoIsThatPokemonPageTitle>
 
           <WhoIsThatPokemonScore>
-            Score: {Cookies.get('score') ?? '0'}
+            Score: <span data-cy="score">{Cookies.get('score') ?? '0'}</span>
           </WhoIsThatPokemonScore>
 
           <WhoIsThatPokemonImageContainer>
@@ -90,6 +90,7 @@ const WhoIsThatPokemon: React.FC = memo(() => {
               <LoadingPokemonComponent />
             ) : (
               <WhoIsThatPokemonImage
+                data-cy="pokemon-image"
                 style={{
                   transition: shouldShowPokemonImage ? 'ease-in 1s' : '',
                 }}
@@ -104,6 +105,7 @@ const WhoIsThatPokemon: React.FC = memo(() => {
             {pokemonOptions.map((pokemonOption, index) => (
               <WhoIsThatPokemonButton
                 key={index}
+                data-cy={`option-${index}`}
                 isAnswerCorrect={
                   actionResponse?.data.correctAnswer === pokemonOption
                 }

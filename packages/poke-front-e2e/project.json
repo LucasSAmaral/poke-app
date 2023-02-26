@@ -1,0 +1,25 @@
+{
+  "name": "poke-front-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/poke-front-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "cypress": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "packages/poke-front-e2e/cypress.config.ts",
+        "baseUrl": "http://localhost:3000",
+        "testingType": "e2e"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/poke-front-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["poke-front"]
+}
