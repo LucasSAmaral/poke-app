@@ -45,11 +45,11 @@ export class BuildService {
 
   buildMainPage(payload: MainPagePayload): MainPageResponse {
     return {
-      pageTitle: 'PokeApp',
+      pageTitle: 'PokéApp',
       menuOptions: [
         { menuOptionName: 'Party', linkPath: 'poke-party' },
         {
-          menuOptionName: 'Pokedex',
+          menuOptionName: 'Pokédex',
           linkPath: 'pokedex',
         },
         {
