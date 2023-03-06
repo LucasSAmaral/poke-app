@@ -4,6 +4,7 @@ import { useBffPage } from '../../hooks/useBffPage';
 import { PageTitle, PageWrapper } from '../../style/commons.style';
 import ErrorComponent from '../../components/commons/errorComponent';
 import LoadingPageComponent from '../../components/commons/loadingPageComponent';
+import LinkButton from '../../components/commons/linkButton';
 
 const MainPage: React.FC = () => {
   const { queryResponse, pageStatus } = useBffPage<MainPageResponse>(
@@ -27,9 +28,9 @@ const MainPage: React.FC = () => {
           <MainPageTitle>{pageTitle}</MainPageTitle>
           <MainPageMenu>
             {menuOptions.map((menuOption, index) => (
-              <Link key={index} to={menuOption.linkPath}>
+              <MainPageMenuLink key={index} to={menuOption.linkPath}>
                 {menuOption.menuOptionName}
-              </Link>
+              </MainPageMenuLink>
             ))}
           </MainPageMenu>
         </MainPageWrapper>
@@ -52,22 +53,10 @@ const MainPageMenu = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
 
-  a {
-    font-size: 1.5rem;
-    padding: 10px 5px;
-    width: 100%;
-    text-align: center;
-    background-color: #010124;
-    color: #ffcb05;
-    text-decoration: none;
-    background-image: linear-gradient(to bottom, #010124, #002c5f, #010124);
-    border-radius: 15px;
-
-    &:hover {
-      background-image: linear-gradient(to bottom, #002c5f, #010124, #002c5f);
-    }
-  }
+const MainPageMenuLink = styled(LinkButton)`
+  font-size: 1.5rem;
 `;
 
 export default MainPage;
