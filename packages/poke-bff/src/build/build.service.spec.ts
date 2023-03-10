@@ -21,11 +21,11 @@ describe('BuildService', () => {
     const mainPageResponse = service.buildMainPage({});
 
     const expectedResponse = {
-      pageTitle: 'PokeApp',
+      pageTitle: 'PokéApp',
       menuOptions: [
         { menuOptionName: 'Party', linkPath: 'poke-party' },
         {
-          menuOptionName: 'Pokedex',
+          menuOptionName: 'Pokédex',
           linkPath: 'pokedex',
         },
         {
