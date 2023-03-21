@@ -21,7 +21,7 @@ jobs:
         run: npm run front:build
       - name: Deploy to Netlify
         uses: netlify/actions/cli@main
-         env:
+        env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
           args: deploy --prod
