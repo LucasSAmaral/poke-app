@@ -24,7 +24,6 @@ jobs:
         uses: nwtgck/actions-netlify@v1.0.0
         with:
           publish-dir: ./build
-        when: manual
 
   build-bff:
     name: Build BFF
@@ -46,4 +45,3 @@ jobs:
           # render_service_id: ${{ secrets.RENDER_SERVICE_ID }}
           context_path: /
           artifact_path: ./build
-        when: manual
