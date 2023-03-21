@@ -20,7 +20,7 @@ jobs:
       - name: Build Frontend
         run: npm run front:build
       - name: Deploy to Netlify
-        uses: netlify/actions/cli@main
+        uses: netlify/actions/cli@master
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
