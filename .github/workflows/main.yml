@@ -1,0 +1,48 @@
+name: Build Workflow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-frontend:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm install
+      - name: Build Frontend
+        run: npm run front:build
+      - name: Deploy to Netlify
+        if: github.ref == 'refs/heads/main'
+        uses: nwtgck/actions-netlify@v1.0.0
+        with:
+          publish-dir: ./build
+          deploy-message: ${{ github.sha }}
+
+  build-bff:
+    name: Build BFF
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm install
+      - name: Build BFF
+        run: npm run bff:build
+      - name: Deploy to Render
+        uses: renderapp/deploy-action@v1
+        with:
+          render_email: ${{ secrets.RENDER_EMAIL }}
+          render_password: ${{ secrets.RENDER_PASSWORD }}
+          # render_account_id: ${{ secrets.RENDER_ACCOUNT_ID }}
+          # render_service_id: ${{ secrets.RENDER_SERVICE_ID }}
+          context_path: /
+          artifact_path: ./build
