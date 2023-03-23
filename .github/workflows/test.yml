@@ -16,7 +16,10 @@ jobs:
         with:
           node-version: 18
       - name: Run front tests
-        run: npm install && npx nx run-many --target=serve --projects=poke-front && npx nx cypress poke-front-e2e
+        uses: ""
+      - run: npm ci
+      - run: npx nx run-many --target=serve --projects=poke-front
+      - run: npx nx cypress poke-front-e2e
         continue-on-error: false
   
   bff:
@@ -29,6 +32,8 @@ jobs:
         with:
           node-version: 18
       - name: Run bff tests
-        run: npm install && npx nx test poke-bff
+        uses: ""
+      - run: npm ci
+      - run: npx nx test poke-bff
         continue-on-error: false
           
