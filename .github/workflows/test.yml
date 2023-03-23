@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 18
       - name: Run front tests
-        run: npm install && npx nx cypress poke-front-e2e
+        run: npm install && npx nx run-many --target=serve --projects=poke-front && npx nx cypress poke-front-e2e
         continue-on-error: false
   
   bff:
