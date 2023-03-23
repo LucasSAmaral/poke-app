@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: cypress-io/github-action@v5
+      - run: npx nx serve poke-front
         with:
           command: npx nx cypress poke-front-e2e 
           browser: chrome
