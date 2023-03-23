@@ -19,6 +19,7 @@ jobs:
         run: npm ci
       - name: Start Server
         run: npx nx run-many --target=serve --projects=poke-front,poke-bff
+        timeout-minutes: 2
       - name: Run front tests
         run: npx nx cypress poke-front-e2e
         continue-on-error: false
@@ -26,7 +27,7 @@ jobs:
   bff:
     name: Bff Test
     runs-on: ubuntu-latest
-    needs: front
+    # needs: front
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
