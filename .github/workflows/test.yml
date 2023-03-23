@@ -1,0 +1,39 @@
+name: Tests
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+jobs:
+  front:
+    name: Cypress Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18
+          run: npm install
+      - name: Run front tests
+        run: npm run front:cy:headless
+        continue-on-error: false
+  
+  bff:
+    name: Bff Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18
+          run: npm install
+      - name: Run bff tests
+        run: npm run bff:test
+        continue-on-error: false
+          

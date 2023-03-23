@@ -13,7 +13,8 @@
     "front:cy:open": "nx cypress poke-front-e2e --watch",
     "front:build": "npm install && npx nx build poke-front --prod",
     "bff:build": "npm install && npx nx build poke-bff --prod",
-    "bff:test": "nx test poke-bff --watch"
+    "bff:test:watch": "nx test poke-bff --watch",
+    "bff:test": "nx test poke-bff"
   },
   "private": true,
   "devDependencies": {
