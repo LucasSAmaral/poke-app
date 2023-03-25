@@ -6,10 +6,10 @@ import { useBffAction } from '../../hooks/useBffAction';
 import { useBffPage } from '../../hooks/useBffPage';
 import { PageTitle, PageWrapper } from '../../style/commons.style';
 import { useQueryClient } from 'react-query';
-import { checkCssAnswer, loadingSkeleton } from '../../services/css.service';
-import LoadingPokemonComponent from './components/loadingPokemonComponent';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import PokemonImageComponent from './components/pokemonImageComponent';
+import PokemonOptionsComponent from './components/pokemonOptionsComponent';
 
 const WhoIsThatPokemon: React.FC = memo(() => {
   const { queryResponse, pageStatus } =
@@ -85,47 +85,19 @@ const WhoIsThatPokemon: React.FC = memo(() => {
             Score: <span data-cy="score">{Cookies.get('score') ?? '0'}</span>
           </WhoIsThatPokemonScore>
 
-          <WhoIsThatPokemonImageContainer>
-            {loading ? (
-              <LoadingPokemonComponent />
-            ) : (
-              <WhoIsThatPokemonImage
-                data-cy="pokemon-image"
-                style={{
-                  transition: shouldShowPokemonImage ? 'ease-in 1s' : '',
-                }}
-                className={shouldShowPokemonImage ? '' : 'cover'}
-                src={pokemonImageUrl}
-                draggable={false}
-              />
-            )}
-          </WhoIsThatPokemonImageContainer>
+          <PokemonImageComponent
+            loading={loading}
+            shouldShowPokemonImage={shouldShowPokemonImage}
+            pokemonImageUrl={pokemonImageUrl}
+          />
 
-          <WhoIsThatPokemonOptionsWrapper>
-            {pokemonOptions.map((pokemonOption, index) => (
-              <WhoIsThatPokemonButton
-                key={index}
-                data-cy={`option-${index}`}
-                isAnswerCorrect={
-                  actionResponse?.data.correctAnswer === pokemonOption
-                }
-                isAnswerWrong={
-                  actionResponse?.data.wrongAnswer === pokemonOption
-                }
-                onClick={() => {
-                  checkAnswer({
-                    correctAnswer,
-                    currentPoints: Number(Cookies.get('score') ?? '0'),
-                    selectedAnswer: pokemonOption,
-                  });
-                }}
-                disabled={loading}
-                loading={loading}
-              >
-                {pokemonOption}
-              </WhoIsThatPokemonButton>
-            ))}
-          </WhoIsThatPokemonOptionsWrapper>
+          <PokemonOptionsComponent
+            loading={loading}
+            pokemonOptions={pokemonOptions}
+            correctAnswer={correctAnswer}
+            checkAnswer={checkAnswer}
+            actionResponse={actionResponse}
+          />
         </WhoIsThatPokemonWrapper>
       );
     }
@@ -143,46 +115,6 @@ const WhoIsThatPokemonPageTitle = styled(PageTitle)`
 
 const WhoIsThatPokemonScore = styled.h3`
   font-size: 2.5rem;
-`;
-
-const WhoIsThatPokemonImageContainer = styled.div`
-  height: 300px;
-  img {
-    filter: brightness(1) drop-shadow(2px 4px 4px black);
-    &.cover {
-      filter: brightness(0) drop-shadow(2px 4px 4px black);
-    }
-  }
-`;
-
-const WhoIsThatPokemonImage = styled.img`
-  max-width: 300px;
-  height: 300px;
-`;
-
-const WhoIsThatPokemonOptionsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const WhoIsThatPokemonButton = styled.button<{
-  loading: boolean;
-  isAnswerCorrect?: boolean;
-  isAnswerWrong?: boolean;
-}>`
-  cursor: pointer;
-  min-width: 150px;
-  height: 30px;
-  font-size: 1rem;
-  text-align: center;
-  color: #ffcb05;
-  text-decoration: none;
-  border-radius: 9px;
-
-  ${({ isAnswerCorrect, isAnswerWrong }) =>
-    checkCssAnswer(isAnswerCorrect, isAnswerWrong)}
-
-  ${({ loading }) => loadingSkeleton(loading)}
 `;
 
 export default WhoIsThatPokemon;
