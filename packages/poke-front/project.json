@@ -55,6 +55,14 @@
         }
       }
     },
+    "cypress": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "packages/poke-front/cypress.config.ts",
+        "baseUrl": "http://localhost:3000",
+        "testingType": "e2e"
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

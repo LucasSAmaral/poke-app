@@ -28,7 +28,7 @@ describe('Who is that pokemon flux', () => {
         .its('response.body.pokemonOptions')
         .should('deep.equal', buildResponseMock.pokemonOptions);
 
-      buildResponseMock.pokemonOptions.map((option, index) =>
+      buildResponseMock.pokemonOptions.map((option: any, index: any) =>
         cy.get(`[data-cy=option-${index}]`).contains(option)
       );
     });
@@ -50,7 +50,7 @@ describe('Who is that pokemon flux', () => {
           },
         });
 
-        cy.wrap(rqx.response.body).should('deep.equal', {
+        cy.wrap(rqx.response?.body).should('deep.equal', {
           correctAnswer: 'pikachu',
           gameOver: false,
           isAnswerCorrect: true,
