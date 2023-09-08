@@ -1,10 +1,4 @@
 {
-  "extends": "nx/presets/npm.json",
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "poke-app-nx",
-  "affected": {
-    "defaultBase": "main"
-  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
@@ -13,6 +7,12 @@
         "accessToken": "NjcyMmViOTMtMTQ1YS00NDEzLTgxM2QtZTA0MjViNTI5ODQzfHJlYWQtd3JpdGU="
       }
     }
+  },
+  "extends": "nx/presets/npm.json",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "npmScope": "poke-app-nx",
+  "affected": {
+    "defaultBase": "main"
   },
   "targetDefaults": {
     "test": {
@@ -24,7 +24,7 @@
   },
   "defaultProject": "poke-front",
   "generators": {
-    "@nrwl/react": {
+    "@nx/react": {
       "application": {
         "style": "styled-components",
         "linter": "eslint",
