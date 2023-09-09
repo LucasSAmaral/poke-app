@@ -1,4 +1,6 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import { Injectable } from '@nestjs/common';
+import { AxiosRequestConfig } from 'axios';
+import { RequestService } from '../services/request.service';
 
 type PokemonResponse = {
   count: number;
@@ -7,8 +9,9 @@ type PokemonResponse = {
   results: Array<{ name: string; url: string }>;
 };
 
+@Injectable()
 export class PokemonRepository {
-  instance = axios.create();
+  constructor(private requestService: RequestService) {}
 
   baseUrl = 'https://pokeapi.co/api/v2';
 
@@ -19,7 +22,7 @@ export class PokemonRepository {
 
     const {
       data: { results },
-    } = await this.instance.request<PokemonResponse>(request);
+    } = await this.requestService.send<PokemonResponse>(request);
 
     return results;
   }
@@ -41,7 +44,7 @@ export class PokemonRepository {
 
     const {
       data: { id: pokemonNumber },
-    } = await this.instance.request<{ id: number }>(request);
+    } = await this.requestService.send<{ id: number }>(request);
     return pokemonNumber.toString();
   }
 
