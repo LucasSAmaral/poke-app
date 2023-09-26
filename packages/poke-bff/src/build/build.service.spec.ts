@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PokemonRepository } from '../repository/pokemon.repository';
+import { RequestService } from '../services/request.service';
 import { BuildService } from './build.service';
 
 describe('BuildService', () => {
@@ -7,7 +8,7 @@ describe('BuildService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [BuildService, PokemonRepository],
+      providers: [BuildService, PokemonRepository, RequestService],
     }).compile();
 
     service = module.get<BuildService>(BuildService);
