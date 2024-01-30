@@ -6,8 +6,8 @@ export type NodeEnvironment = 'development' | 'production';
 const env = process.env.NODE_ENV ?? 'development';
 
 const buildUrlEnv: { [key in NodeEnvironment]: string } = {
-  production: 'http://localhost:3333/api/build',
-  development: 'https://poke-bff.vercel.app/api/build',
+  development: 'http://localhost:3333/api/build',
+  production: 'https://poke-bff.vercel.app/api/build',
 };
 
 export const useBffPage = <PageResponse>(
