@@ -5,8 +5,8 @@ import { NodeEnvironment } from './useBffPage';
 const env = process.env.NODE_ENV ?? 'development';
 
 const actionUrlEnv: { [key in NodeEnvironment]: string } = {
-  development: 'http://localhost:3333/api/action',
-  production: 'https://poke-bff.onrender.com/api/action',
+  production: 'http://localhost:3333/api/action',
+  development: 'https://poke-bff.vercel.app/api/action',
 };
 
 export const useBffAction = <ActionResponse>(
