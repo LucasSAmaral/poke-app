@@ -73,6 +73,7 @@
     "@nestjs/common": "10.2.4",
     "@nestjs/core": "10.2.4",
     "@nestjs/platform-express": "10.2.4",
+    "@nestjs/serve-static": "^4.0.0",
     "axios": "^1.2.2",
     "core-js": "^3.6.5",
     "js-cookie": "^3.0.1",
