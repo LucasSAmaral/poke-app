@@ -6,7 +6,7 @@ const env = process.env.NODE_ENV ?? 'development';
 
 const actionUrlEnv: { [key in NodeEnvironment]: string } = {
   development: 'http://localhost:3333/api/action',
-  production: 'https://poke-bff.onrender.com/api/build',
+  production: 'https://poke-bff.onrender.com/api/action',
 };
 
 export const useBffAction = <ActionResponse>(
